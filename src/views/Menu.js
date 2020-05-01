@@ -118,7 +118,8 @@ export default function Album() {
    * Use Effect Hook
    */
   useEffect(() => {
-
+    var cookies = new Cookies()
+    console.log(cookies.get('user'));
     axios.get(`${uri}/item/all`).then(function(response){
       setItems(response.data.items)
     })

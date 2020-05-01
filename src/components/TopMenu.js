@@ -3,18 +3,18 @@ import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+import Container from '@material-ui/core/Container';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import Cookies from 'universal-cookie';
+import axios from "axios";
+import uri from "../helpers/system_variables";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -80,10 +80,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * Top Menu
+ */
 export default function TopMenu() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const cookies = new Cookies();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -105,6 +109,17 @@ export default function TopMenu() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  function handleLogOut() {
+    var user = cookies.get('user');
+    axios.post(`${uri}/auth/logout`,{},{headers: { 'Authorization': `${user.token_type} ${user.access_token}`}})
+    .then(function(response){
+      if (response.data.success){
+        cookies.remove('user');
+        window.location.reload();
+      }
+    })
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -116,8 +131,8 @@ export default function TopMenu() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Orders</MenuItem>
+      <MenuItem onClick={(e)=>handleLogOut()}>Log out</MenuItem>
     </Menu>
   );
 
@@ -168,6 +183,30 @@ export default function TopMenu() {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
+            {typeof cookies.get('user') == "undefined" ? 
+            <Container>
+              <Button
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                href="/login"
+                color="inherit"
+              >
+                Login
+              </Button> 
+              <Button
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                href="/register"
+                color="inherit"
+              >
+                Register
+              </Button>
+            </Container>
+            :
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -177,7 +216,7 @@ export default function TopMenu() {
               color="inherit"
             >
               <AccountCircle />
-            </IconButton>
+            </IconButton>}
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
