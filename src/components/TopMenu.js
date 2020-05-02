@@ -129,7 +129,7 @@ export default function TopMenu() {
   }
 
   const menuId = 'primary-search-account-menu';
-  const renderMenu = (
+  const renderMenu = (typeof cookies.get('user') != "undefined"?
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -141,6 +141,18 @@ export default function TopMenu() {
     >
       <MenuItem onClick={(e)=>handleOrders()}>Orders</MenuItem>
       <MenuItem onClick={(e)=>handleLogOut()}>Log out</MenuItem>
+    </Menu> : 
+    <Menu
+    anchorEl={anchorEl}
+    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+    id={menuId}
+    keepMounted
+    transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    open={isMenuOpen}
+    onClose={handleMenuClose}
+    >
+      <MenuItem onClick={(e)=>{window.location.href = '/login'}}>Login</MenuItem>
+      <MenuItem onClick={(e)=>{window.location.href = '/register'}}>Register</MenuItem>
     </Menu>
   );
 
