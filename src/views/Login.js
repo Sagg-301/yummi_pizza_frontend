@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Component Menu of Items
  */
-export default function Album() {
+export default function Login() {
   const classes = useStyles();
   const alert = useAlert();
   const cookies = new Cookies()
@@ -111,7 +111,7 @@ export default function Album() {
         }
         else{
             
-            alert.show("All fields are required", {
+            alert.show(response.data.response.message, {
                 timeout:2000,
                 type: 'error',
             })

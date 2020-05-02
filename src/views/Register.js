@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 /**
  * Component Menu of Items
  */
-export default function Album() {
+export default function Register() {
   const classes = useStyles();
   const alert = useAlert();
 
@@ -76,10 +76,15 @@ export default function Album() {
               })
         }
         else{
-            alert.show("All fields are required", {
-                timeout:2000,
-                type: 'error',
-            })
+          for (const error in response.data.errors) {
+              if (response.data.errors.hasOwnProperty(error)) {
+                  const element = response.data.errors[error];
+                  alert.show(element, {
+                      timeout:2000,
+                      type: 'error',
+                  })
+              }
+          }
         }
       }).catch(function(response){
         console.log(response);

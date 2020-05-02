@@ -120,6 +120,9 @@ export default function TopMenu() {
       }
     })
   }
+  function handleOrders() {
+    window.location.href = '/orders';
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -132,7 +135,7 @@ export default function TopMenu() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Orders</MenuItem>
+      <MenuItem onClick={(e)=>handleOrders()}>Orders</MenuItem>
       <MenuItem onClick={(e)=>handleLogOut()}>Log out</MenuItem>
     </Menu>
   );
@@ -148,11 +151,6 @@ export default function TopMenu() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem >
-        <IconButton href="/" aria-label="show 4 new mails" color="inherit">
-          <LocalPizzaIcon />
-        </IconButton>
-      </MenuItem>
       <MenuItem>
         <IconButton href="/shopping_cart" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
@@ -179,14 +177,15 @@ export default function TopMenu() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
+          
+          <IconButton edge="start" href="/" aria-label="show 4 new mails" color="inherit">
+              <LocalPizzaIcon />
+          </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             Yummi Pizza
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton href="/" aria-label="show 4 new mails" color="inherit">
-              <LocalPizzaIcon />
-            </IconButton>
             <IconButton href="/shopping_cart"  aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <ShoppingCartIcon />

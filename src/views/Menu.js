@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Backdrop from '@material-ui/core/Backdrop';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from "@material-ui/core/TextField";
@@ -73,6 +74,10 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 }));
 
@@ -168,6 +173,12 @@ export default function Album() {
     
   },[]);
 
+  function checkIfLessThanZero(event) {
+    if (event.target.value < 1){
+      event.target.value = 1;
+    }
+  }
+
   return (
     <React.Fragment>
       <CssBaseline />
@@ -187,7 +198,10 @@ export default function Album() {
         <Container className={classes.cardGrid} maxWidth="md">
             {/* End hero unit */}
             <Grid container spacing={4}>
-              {items.length == 0 ? <div className={classes.circularLoad}><CircularProgress /></div>  : items.map((item) => (
+              {items.length == 0 ? <Backdrop className={classes.backdrop} open={true}>
+                                    <CircularProgress color="inherit" />
+                                  </Backdrop>  : 
+                items.map((item) => (
                 <Grid item key={item.id} xs={12} sm={6} md={4}>
                   <Card className={classes.card}>
                     <CardMedia
@@ -214,6 +228,7 @@ export default function Album() {
                         label="Quantity"
                         type="number"
                         className={classes.itemQuantity}
+                        onChange = {(e)=>checkIfLessThanZero(e)}
                         InputLabelProps={{
                           shrink: true,
                         }}
