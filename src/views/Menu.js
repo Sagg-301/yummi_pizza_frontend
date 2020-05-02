@@ -19,19 +19,7 @@ import TopMenu from "../components/TopMenu";
 import axios from "axios";
 import uri from "../helpers/system_variables";
 import { useAlert } from 'react-alert'
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -113,7 +101,10 @@ export default function Album() {
 
     cart.push({'id': id, 'quantity': quantity, 'price': price, 'image_url': url})
     cookies.set('shopping_cart',cart);
-    console.log(cart)
+    alert.show("Item added to cart", {
+      timeout:2000,
+      type: 'success',
+    })
   }
 
   /**
@@ -126,10 +117,16 @@ export default function Album() {
       items: [{'id':id, 'quantity':quantity}]
     }, {headers: { 'Authorization': `${user.token_type} ${user.access_token}`}})
     .then(function(response){
-      console.log(response)
+      alert.show("Item added to cart", {
+        timeout:2000,
+        type: 'success',
+      })
     })
     .catch(function(response){
-      console.log(response)
+      alert.show("There was an internatl error", {
+        timeout:2000,
+        type: 'error',
+      })
     })
   }
 
@@ -150,11 +147,6 @@ export default function Album() {
     else{
       addToCart(user, id, quantity);
     }
-
-    alert.show("Item added to cart", {
-      timeout:2000,
-      type: 'success',
-    })
   }
 
 
@@ -244,15 +236,7 @@ export default function Album() {
           </Container>
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
+      <Footer/>
       {/* End footer */}
     </React.Fragment>
   );

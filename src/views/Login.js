@@ -16,19 +16,7 @@ import Cookies from 'universal-cookie';
 import TopMenu from "../components/TopMenu";
 import axios from "axios";
 import uri from "../helpers/system_variables";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -58,6 +46,7 @@ export default function Login() {
   const classes = useStyles();
   const alert = useAlert();
   const cookies = new Cookies()
+  const [disabled,setDisabled] = useState(false);
 
   /**
    * Add the items saved in cookies to cart
@@ -79,13 +68,12 @@ export default function Login() {
    * Handle the Login Logic
    */
   function handleLogin(){
+      setDisabled(true);
       var data = {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
         remember_me: document.getElementById('remember').value,
       };
-
-      console.log(data);
       axios.post(`${uri}/auth/login`,data).then(function(response){
         if (response.data.success) {
             var user = {
@@ -110,7 +98,7 @@ export default function Login() {
               })
         }
         else{
-            
+            setDisabled(false);
             alert.show(response.data.response.message, {
                 timeout:2000,
                 type: 'error',
@@ -169,6 +157,7 @@ export default function Login() {
                 </Grid>
                 <Button
                     fullWidth
+                    disabled={disabled}
                     variant="contained"
                     color="primary"
                     className={classes.submit}
@@ -180,15 +169,7 @@ export default function Login() {
         </div>
       </Container>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
+      <Footer/>
       {/* End footer */}
     </React.Fragment>
   );

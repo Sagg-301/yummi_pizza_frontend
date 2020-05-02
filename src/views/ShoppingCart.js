@@ -5,7 +5,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 import Avatar from "@material-ui/core/Avatar";
 import Container from "@material-ui/core/Container";
 import List from '@material-ui/core/List';
@@ -16,7 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { useAlert } from 'react-alert'
 import Cookies from 'universal-cookie';
 import TopMenu from "../components/TopMenu";
@@ -29,19 +28,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import InputMask from 'react-input-mask';
-
-function Copyright() {
-return (
-    <Typography variant="body2" color="textSecondary" align="center">
-    {'Copyright © '}
-    <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-    </Link>{' '}
-    {new Date().getFullYear()}
-    {'.'}
-    </Typography>
-);
-}
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -375,15 +362,7 @@ return (
         </Dialog>
     </div>                                   
     {/* Footer */}
-    <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-        Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-        Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-    </footer>
+    <Footer/>
     {/* End footer */}
     </React.Fragment>
 );

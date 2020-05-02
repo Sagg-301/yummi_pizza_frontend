@@ -13,7 +13,6 @@ export default function PlaceOrderDialog(props) {
 
     const handleClose = ()=>{
         setOpen(false);
-        console.log(open)
     }
 
     return (
