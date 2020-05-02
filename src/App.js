@@ -12,6 +12,7 @@ import {
 import Album from './views/Menu'
 import Register from './views/Register'
 import Login from './views/Login'
+import ShoppingCart from './views/ShoppingCart'
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
           <NotLoggedRoute path="/register">
             <Register />
           </NotLoggedRoute>
+          <Route path="/shopping_cart">
+            <ShoppingCart />
+          </Route>
           <Route path="/">
             <Album />
           </Route>

@@ -17,6 +17,7 @@ import Cookies from 'universal-cookie';
 import TopMenu from "../components/TopMenu";
 import axios from "axios";
 import uri from "../helpers/system_variables";
+import { useAlert } from 'react-alert'
 
 function Copyright() {
   return (
@@ -60,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
   circularLoad:{
     display: 'flex',
     '& > * + *': {
-      marginLeft: theme.spacing(2),
+      marginLeft: 'theme.spacing(2)',
     },
   },
   itemQuantity:{
@@ -81,20 +82,17 @@ const useStyles = makeStyles((theme) => ({
  */
 export default function Album() {
   const classes = useStyles();
-
-  //State
   const [items, setItems] = useState([]);
+  const cookies = new Cookies();
+  const alert = useAlert();
 
   /**
-   * Add item to cart event
+   * Add to cart in cookies
+   * @param {*} cart 
    * @param {*} id 
    * @param {*} quantity 
    */
-  function handleAddToCart(id) {
-    var cookies = new Cookies();
-    var cart = cookies.get('shopping_cart');
-
-    var quantity = document.getElementById("quantity_input_"+id).value
+  function addToCartInCookies(cart, id, price, quantity, url){
 
     if(typeof cart == "undefined" ){
       cookies.set('shopping_cart',[]);
@@ -108,9 +106,50 @@ export default function Album() {
       }
     }
 
-    cart.push({'id': id, 'quantity': quantity})
+    cart.push({'id': id, 'quantity': quantity, 'price': price, 'image_url': url})
     cookies.set('shopping_cart',cart);
     console.log(cart)
+  }
+
+  /**
+   * Add to cart in databse
+   * @param {*} id 
+   * @param {*} quantity 
+   */
+  function addToCart(user, id, quantity){
+    axios.post(`${uri}/cart/store`,{
+      items: [{'id':id, 'quantity':quantity}]
+    }, {headers: { 'Authorization': `${user.token_type} ${user.access_token}`}})
+    .then(function(response){
+      console.log(response)
+    })
+    .catch(function(response){
+      console.log(response)
+    })
+  }
+
+  /**
+   * Add item to cart event
+   * @param {*} id 
+   * @param {*} quantity 
+   */
+  function handleAddToCart(event, id, price, url) {
+    console.log(event.target);
+    var cart = cookies.get('shopping_cart');
+    var user = cookies.get('user');
+    var quantity = document.getElementById("quantity_input_"+id).value
+
+    if(user == undefined){
+      addToCartInCookies(cart,id,price, quantity, url)
+    }
+    else{
+      addToCart(user, id, quantity);
+    }
+
+    alert.show("Item added to cart", {
+      timeout:2000,
+      type: 'success',
+    })
   }
 
 
@@ -148,7 +187,7 @@ export default function Album() {
         <Container className={classes.cardGrid} maxWidth="md">
             {/* End hero unit */}
             <Grid container spacing={4}>
-              {items.length == 0 ? <CircularProgress lassName={classes.circularLoad}/> : items.map((item) => (
+              {items.length == 0 ? <div className={classes.circularLoad}><CircularProgress /></div>  : items.map((item) => (
                 <Grid item key={item.id} xs={12} sm={6} md={4}>
                   <Card className={classes.card}>
                     <CardMedia
@@ -171,6 +210,7 @@ export default function Album() {
                     <CardActions>
                       <TextField
                         id={"quantity_input_"+item.id}
+                        defaultValue = {1}
                         label="Quantity"
                         type="number"
                         className={classes.itemQuantity}
@@ -178,7 +218,7 @@ export default function Album() {
                           shrink: true,
                         }}
                       />
-                      <IconButton className={classes.addToCartButton} aria-label="Add to shoping cart" color="inherit" onClick={(e)=>handleAddToCart(item.id)}>
+                      <IconButton className={classes.addToCartButton} id={"add-to-cart-"+item.id} aria-label="Add to shoping cart" color="inherit" onClick={(e)=>handleAddToCart(e, item.id, item.price, item.image_url)}>
                           <AddShoppingCartIcon />
                       </IconButton>
                     </CardActions>

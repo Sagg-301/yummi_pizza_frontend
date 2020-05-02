@@ -57,6 +57,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Album() {
   const classes = useStyles();
   const alert = useAlert();
+  const cookies = new Cookies()
 
   /**
    * Add the items saved in cookies to cart
@@ -87,8 +88,6 @@ export default function Album() {
       console.log(data);
       axios.post(`${uri}/auth/login`,data).then(function(response){
         if (response.data.success) {
-
-            var cookies = new Cookies();
             var user = {
                 access_token: response.data.access_token,
                 expires_at: response.data.expires_at,

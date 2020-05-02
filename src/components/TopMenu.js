@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu';
 import Container from '@material-ui/core/Container';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import LocalPizzaIcon from '@material-ui/icons/LocalPizza';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Cookies from 'universal-cookie';
 import axios from "axios";
@@ -147,8 +148,13 @@ export default function TopMenu() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem >
+        <IconButton href="/" aria-label="show 4 new mails" color="inherit">
+          <LocalPizzaIcon />
+        </IconButton>
+      </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 4 new mails" color="inherit">
+        <IconButton href="/shopping_cart" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
             <ShoppingCartIcon />
           </Badge>
@@ -178,7 +184,10 @@ export default function TopMenu() {
           </Typography>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            <IconButton href="/" aria-label="show 4 new mails" color="inherit">
+              <LocalPizzaIcon />
+            </IconButton>
+            <IconButton href="/shopping_cart"  aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={0} color="secondary">
                 <ShoppingCartIcon />
               </Badge>
