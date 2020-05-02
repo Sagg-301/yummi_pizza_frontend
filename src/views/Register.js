@@ -14,19 +14,7 @@ import Cookies from 'universal-cookie';
 import TopMenu from "../components/TopMenu";
 import axios from "axios";
 import uri from "../helpers/system_variables";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+import Footer from "../components/Footer";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -55,16 +43,16 @@ const useStyles = makeStyles((theme) => ({
 export default function Register() {
   const classes = useStyles();
   const alert = useAlert();
+  const [disabled,setDisabled] = useState(false);
 
   function handleRegister(){
+      setDisabled(true);
       var data = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
         password_confirmation: document.getElementById('password_confirmation').value,
       };
-
-      console.log(data);
       axios.post(`${uri}/auth/register`,data).then(function(response){
         if (response.data.success) {
             alert.show(response.data.response.message, {
@@ -76,6 +64,7 @@ export default function Register() {
               })
         }
         else{
+          setDisabled(false);
           for (const error in response.data.errors) {
               if (response.data.errors.hasOwnProperty(error)) {
                   const element = response.data.errors[error];
@@ -155,6 +144,7 @@ export default function Register() {
                     </Grid>
                 </Grid>
                 <Button
+                    disabled = {disabled}
                     fullWidth
                     variant="contained"
                     color="primary"
@@ -165,7 +155,7 @@ export default function Register() {
                 </Button>
                 <Grid container justify="flex-end">
                     <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/login" variant="body2">
                         Already have an account? Sign in
                     </Link>
                     </Grid>
@@ -174,15 +164,7 @@ export default function Register() {
         </div>
       </Container>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright />
-      </footer>
+      <Footer/>
       {/* End footer */}
     </React.Fragment>
   );

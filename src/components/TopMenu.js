@@ -124,6 +124,10 @@ export default function TopMenu() {
     window.location.href = '/orders';
   }
 
+  function handleShoppingCart() {
+    window.location.href = '/shopping_cart';
+  }
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -151,8 +155,8 @@ export default function TopMenu() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton href="/shopping_cart" aria-label="show 4 new mails" color="inherit">
+      <MenuItem onClick={(e)=>handleShoppingCart()}>
+        <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={0} color="secondary">
             <ShoppingCartIcon />
           </Badge>
